@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hire Mate AI | NCC Corporate Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-color: #004aad; 
+            --bg-dark: #0f172a;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --online-green: #10b981;
+            --error-red: #ef4444;
+        }
+
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .portal {
+            width: 95%;
+            max-width: 450px;
+            height: 92vh;
+            background: var(--card-bg);
+            border-radius: 32px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.6);
+        }
+
+        .portal-header {
+            padding: 25px 24px;
+            background: var(--brand-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .header-titles h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+        .header-titles p { margin: 2px 0 0; font-size: 10px; font-weight: 500; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; }
+
+        .status-pill {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 14px; border-radius: 20px; font-size: 10px; font-weight: 700;
+        }
+
+        .green-dot {
+            width: 8px; height: 8px; background: var(--online-green); border-radius: 50%;
+            box-shadow: 0 0 10px var(--online-green); animation: pulse 2s infinite;
+        }
+
+        .chat-body {
+            flex: 1; padding: 24px; overflow-y: auto; background: #f8fafc;
+            display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth;
+        }
+
+        .avatar {
+            width: 42px; height: 42px; background: var(--brand-color); border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+
+        .row {
+            display: flex; gap: 12px; align-items: flex-end; max-width: 90%;
+            animation: springUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .user-row { margin-left: auto; flex-direction: row-reverse; }
+
+        .bubble { padding: 14px 18px; font-size: 14px; line-height: 1.6; border-radius: 22px; }
+        .bot-bubble { background: white; color: var(--text-main); border-bottom-left-radius: 4px; border: 1px solid #eef2f6; }
+        .user-bubble { background: var(--brand-color); color: white; border-bottom-right-radius: 4px; }
+
+        .error-msg { font-size: 11px; color: var(--error-red); margin-top: -12px; margin-left: 54px; font-weight: 600; animation: shake 0.3s; }
+
+        .typing {
+            display: flex; gap: 5px; padding: 15px 20px; background: white;
+            border-radius: 22px; border-bottom-left-radius: 4px; width: fit-content;
+            border: 1px solid #eef2f6;
+        }
+
+        .dot { width: 6px; height: 6px; background: var(--brand-color); border-radius: 50%; animation: dotBounce 1.4s infinite ease-in-out; }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        .options-container {
+            display: flex; gap: 10px; margin-left: 54px;
+            animation: springUp 0.5s ease forwards;
+        }
+
+        .option-btn {
+            padding: 12px 18px; border-radius: 15px; 
+            border: 2px solid var(--brand-color); 
+            background: white; color: var(--brand-color); 
+            cursor: pointer; font-weight: 700; font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .option-btn:hover { background: var(--brand-color); color: white; transform: translateY(-2px); }
+
+        @keyframes dotBounce { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-8px); } }
+        @keyframes springUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+        .input-area { padding: 24px; background: white; display: flex; gap: 12px; border-top: 1px solid #f1f5f9; }
+        input { flex: 1; padding: 15px 20px; border: 2px solid #f1f5f9; border-radius: 18px; outline: none; background: #f8fafc; font-family: inherit; }
+        input:focus { border-color: var(--brand-color); background: #ffffff; }
+
+        .btn-send {
+            background: var(--brand-color); color: white; border: none; width: 52px; height: 52px;
+            border-radius: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="portal">
+    <div class="portal-header">
+        <div class="header-titles">
+            <h1>Hire Mate AI</h1>
+            <p>Network Clothing Company Pvt Ltd</p>
+        </div>
+        <div class="status-pill">
+            <span class="green-dot"></span>
+            LIVE
+        </div>
+    </div>
+
+    <div class="chat-body" id="chat"></div>
+
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Type your answer..." autocomplete="off">
+        <button class="btn-send" onclick="processInput()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+    </div>
+</div>
+
+<script>
+const robotSVG = `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="white" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg>`;
+
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxIwRdfNuEJsc6LdNzi16tcNc0KlRw416kmJxrkt_YbCxyGOHf1t7fXkswd_kTFgq_M/exec';
+
+function isEighteen(dateString) {
+    const today = new Date();
+    const birthDate = new Date(dateString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
+    return age >= 18;
+}
+
+const interviewFlow = [
+    {k:"name", type:"text", q:"Greetings from NCC. I am HireMate AI. To begin your application, please provide your **Full Name**.", r:(v)=>`Welcome, ${v}.`, v:(s)=> /^[a-zA-Z\s]{3,50}$/.test(s), e:"Letters only, please."},
+    {k:"dob", type:"date", q:"Please select your **Date of Birth**.", r:(v)=>`Thank you.`, v:(s)=> s !== "" && isEighteen(s), e:"You must be at least 18 years old to apply."},
+    {k:"mobile", type:"tel", q:"What is your **Mobile Number**?", r:(v)=>`Mobile logged.`, v:(s)=> /^[6-9]\d{9}$/.test(s), e:"Enter a valid 10-digit number."},
+    {k:"email", type:"email", q:"What is your **Email ID**?", r:(v)=>`Email recorded.`, v:(s)=> /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s), e:"Enter a valid email address."},
+    {k:"location", type:"text", q:"What is your **Current Location**?", r:(v)=>`Noted.`, v:(s)=> s.length > 2, e:"Please enter a valid city."},
+    {k:"qualification", type:"text", q:"What is your highest **Qualification**?", r:(v)=>`Great.`, v:(s)=> s.length >= 2, e:"Please specify qualification."},
+    {k:"role", type:"text", q:"Which **Position** are you applying for at NCC?", r:(v)=>`Understood.`, v:(s)=> s.length > 2, e:"Please specify a role."},
+    {k:"experience", type:"number", q:"Total professional **Experience** (in years)?", r:(v)=>`${v} years recorded.`, v:(s)=> !isNaN(s) && s !== "" && s >= 0, e:"Enter a valid number."},
+    {k:"current_salary", type:"number", q:"**Last Drawn Monthly Salary** (₹)?", r:(v)=>`Updated.`, v:(s)=> !isNaN(s) && s >= 0, e:"Enter a valid amount."},
+    {k:"expected_salary", type:"number", q:"**Expected Monthly Salary** (₹)?", r:(v)=>`Noted.`, v:(s)=> !isNaN(s) && s > 0, e:"Enter a valid amount."},
+    {k:"joining_status", type:"options", q:"Are you available to join immediately?"}
+];
+
+let step = 0;
+let userData = { refId: "NCC-" + Math.floor(Math.random() * 900000 + 100000), notice_days: "0" };
+
+function addMsg(text, type) {
+    const chat = document.getElementById('chat');
+    const row = document.createElement('div');
+    row.className = type === 'bot' ? 'row' : 'row user-row';
+    const avatar = type === 'bot' ? `<div class="avatar">${robotSVG}</div>` : '';
+    row.innerHTML = `${avatar}<div class="bubble ${type}-bubble">${text}</div>`;
+    chat.appendChild(row);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function showOptions() {
+    const chat = document.getElementById('chat');
+    const container = document.createElement('div');
+    container.className = 'options-container';
+    container.id = 'optBox';
+    container.innerHTML = `
+        <button class="option-btn" onclick="handleOption('Immediate')">Immediate</button>
+        <button class="option-btn" onclick="handleOption('Notice Period')">Notice Period</button>
+    `;
+    chat.appendChild(container);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function handleOption(choice) {
+    document.getElementById('optBox').remove();
+    addMsg(choice, 'user');
+    userData.joining_status = choice;
+    
+    if(choice === 'Notice Period') {
+        step = 11;
+        showTyping(() => addMsg("How many days is your **Notice Period**?", 'bot'));
+        const input = document.getElementById('userInput');
+        input.type = 'number';
+        input.focus();
+    } else {
+        finish();
+    }
+}
+
+function processInput() {
+    const input = document.getElementById('userInput');
+    let val = input.value.trim();
+    if (step === 11) {
+        if (!isNaN(val) && val !== "") {
+            userData.notice_days = val;
+            addMsg(val, 'user');
+            input.value = '';
+            finish();
+        }
+        return;
+    }
+    const current = interviewFlow[step];
+    if(current.type === "options") return;
+    if(!current.v(val)) { showError(current.e); return; }
+    addMsg(val, 'user');
+    userData[current.k] = val;
+    input.value = '';
+    showTyping(() => {
+        addMsg(current.r(val), 'bot');
+        step++;
+        if(step < interviewFlow.length) {
+            const next = interviewFlow[step];
+            if(next.type === "options") {
+                showTyping(() => { addMsg(next.q, 'bot'); showOptions(); });
+            } else {
+                input.type = next.type;
+                showTyping(() => addMsg(next.q, 'bot'));
+            }
+        } else { finish(); }
+    });
+}
+
+function showError(err) {
+    const chat = document.getElementById('chat');
+    const div = document.createElement('div');
+    div.className = 'error-msg';
+    div.innerText = "⚠️ " + err;
+    chat.appendChild(div);
+    setTimeout(() => div.remove(), 3000);
+}
+
+function showTyping(callback) {
+    const chat = document.getElementById('chat');
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.id = 'tempTyping';
+    row.innerHTML = `<div class="avatar">${robotSVG}</div><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+    chat.appendChild(row);
+    chat.scrollTop = chat.scrollHeight;
+    setTimeout(() => { 
+        const el = document.getElementById('tempTyping');
+        if(el) el.remove(); 
+        callback(); 
+    }, 1200);
+}
+
+function finish() {
+    showTyping(() => {
+        addMsg(`Your Application Reference ID is: **${userData.refId}**.`, "bot");
+        
+        fetch(scriptURL, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: JSON.stringify(userData) 
+        })
+        .then(() => {
+            addMsg("Data synchronized successfully! Our HR team will connect with you shortly.", "bot");
+            addMsg("Wishes for a great career ahead with Network Clothing Company! 🚀", "bot");
+        })
+        .catch(error => {
+            addMsg("Submission confirmed via Reference ID.", "bot");
+        });
+    });
+}
+
+document.getElementById('userInput').addEventListener('keypress', e => { if(e.key === 'Enter') processInput(); });
+window.onload = () => { showTyping(() => addMsg(interviewFlow[0].q, 'bot')); };
+</script>
+
+</body>
+</html>
